@@ -1,18 +1,53 @@
 package shunhiguchi;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 public class IsochroneMap {
     /**
      * Identify nodes accessible within a threshold distance.
+     * Usage: IsochroneMap vertices.csv edges.csv 0 10
      * @param args
      */
-    public IsochroneMap() {
+    private int V;
+    private int sourceVertexId;
+    private int thresholdDist;
+    public IsochroneMap(String filePathVertices, String filePathEdges, int sourceVertexId, int thresholdDist) throws IOException {
         /**
-         * Define a threshold distance.
+         * Define the number of vertices.
          */
+        this.V = getV(filePathVertices);
+
+        /**
+         * Set the source vertex ID.
+         */
+        this.sourceVertexId = sourceVertexId;
 
         /**
          * Load nodes and edges from input files.
          */
+        List<List<Node>> adj = new ArrayList<List<Node>>();
+        for (int i = 0; i < V; i++) {
+            List<Node> item = new ArrayList<Node>();
+            adj.add(item);
+        }
+
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
+            String DELIMITER = ",";
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(DELIMITER);
+                int fromVertex = Integer.parseInt(columns[1]);
+                int toVertex = Integer.parseInt(columns[2]);
+                int cost = Integer.parseInt(columns[3]);
+                adj.get(fromVertex).add(new Node(toVertex, cost));
+            }
+        }
 
         /**
          * Remove nodes and edges outside a threshold distance.
@@ -21,6 +56,8 @@ public class IsochroneMap {
         /**
          * Compute the shortest path distances to all nodes.
          */
+        ShortestPath sp = new ShortestPath(V);
+        sp.dijkstra(adj, this.sourceVertexId);
 
         /**
          * Mark nodes with their shortest path distances within the threshold
@@ -37,10 +74,25 @@ public class IsochroneMap {
     }
 
     /**
+     * Return the number of vertices.
+     * @param filePathVertices file path for vertices.csv
+     * @return the number of vertices
+     */
+    private int getV(String filePathVertices) throws IOException {
+        return (int) Files.lines(Paths.get(filePathVertices)).count() - 1;
+    }
+
+    /**
      * Test client.
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-        ;
+        String filePathVertices = args[1];
+        String filePathEdges = args[2];
+        int startVertexId = Integer.parseInt(args[3]);
+        int thresholdDist = Integer.parseInt(args[4]);
+
+        IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,
+                filePathEdges, startVertexId, thresholdDist);
     }
 }
