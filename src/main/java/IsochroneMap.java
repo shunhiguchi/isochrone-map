@@ -1,5 +1,3 @@
-package shunhiguchi;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -92,7 +90,11 @@ public class IsochroneMap {
         int startVertexId = Integer.parseInt(args[3]);
         int thresholdDist = Integer.parseInt(args[4]);
 
-        IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,
-                filePathEdges, startVertexId, thresholdDist);
+        try {
+            IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,
+                    filePathEdges, startVertexId, thresholdDist);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

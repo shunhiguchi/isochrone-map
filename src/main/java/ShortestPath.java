@@ -4,8 +4,6 @@
  * Computes the shortest paths (single source) for a weighted directed graph.
  */
 
-package shunhiguchi;
-
 import java.util.*;
 
 /**
