@@ -13,6 +13,7 @@ public class IsochroneMap {
      * @param args
      */
     private int V;
+    private int[] dist;
     private int sourceVertexId;
     private int thresholdDist;
     public IsochroneMap(String filePathVertices, String filePathEdges, int sourceVertexId, int thresholdDist) throws IOException {
@@ -38,6 +39,7 @@ public class IsochroneMap {
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
             String DELIMITER = ",";
             String line;
+            line = br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] columns = line.split(DELIMITER);
                 int fromVertex = Integer.parseInt(columns[1]);
@@ -45,17 +47,15 @@ public class IsochroneMap {
                 int cost = Integer.parseInt(columns[3]);
                 adj.get(fromVertex).add(new Node(toVertex, cost));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        /**
-         * Remove nodes and edges outside a threshold distance.
-         */
 
         /**
          * Compute the shortest path distances to all nodes.
          */
         ShortestPath sp = new ShortestPath(V);
-        sp.dijkstra(adj, this.sourceVertexId);
+        int[] dist = sp.dijkstra(adj, this.sourceVertexId);
 
         /**
          * Mark nodes with their shortest path distances within the threshold
@@ -69,6 +69,8 @@ public class IsochroneMap {
         /**
          * Visualize the isochrone map.
          */
+        for (int i = 0; i < dist.length; i++)
+            System.out.println(sourceVertexId + " to " + i + " is " + dist[i]);
     }
 
     /**
@@ -85,10 +87,10 @@ public class IsochroneMap {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-        String filePathVertices = args[1];
-        String filePathEdges = args[2];
-        int startVertexId = Integer.parseInt(args[3]);
-        int thresholdDist = Integer.parseInt(args[4]);
+        String filePathVertices = args[0];
+        String filePathEdges = args[1];
+        int startVertexId = Integer.parseInt(args[2]);
+        int thresholdDist = Integer.parseInt(args[3]);
 
         try {
             IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,

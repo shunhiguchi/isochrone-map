@@ -33,8 +33,9 @@ public class ShortestPath {
      * Dijkstra's shortest path algorithm.
      * @param adj
      * @param src
+     * @return an integer array of distance from a source vertex to vertex i
      */
-    public void dijkstra(List<List<Node>> adj, int src)     {
+    public int[] dijkstra(List<List<Node>> adj, int src)     {
         this.adj = adj;
 
         /* Initialize distances to each node to a maximum integer value. */
@@ -47,7 +48,7 @@ public class ShortestPath {
 
         while (prev.size() != V) {
             /* Terminate if the priority queue is empty. */
-            if (pq.isEmpty()) return;
+            if (pq.isEmpty()) break;
 
             /* Remove the minimum distance node from the priority queue and
              * add it to the list of previous nodes. Process neighbouring nodes.
@@ -59,6 +60,8 @@ public class ShortestPath {
             prev.add(u);
             processNeighbours(u);
         }
+
+        return dist;
     }
 
     /**
