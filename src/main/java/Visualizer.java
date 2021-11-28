@@ -50,7 +50,7 @@ public class Visualizer extends JComponent {
 class Vertex {
     private final double x; // x coordinate of a vertex
     private final double y; // y coordinate of a vertex
-    private final int id; // id of a vertex
+    private final String id; // id of a vertex
     private final boolean reachable; // vertex reachable within a specified cost
     private final boolean source; // vertex is a source vertex
 
@@ -65,15 +65,19 @@ class Vertex {
     public Vertex(int x, int y, int id, boolean reachable, boolean source) {
         this.x = x - (double) R / 2;
         this.y = y - (double) R / 2;
-        this.id = id;
+        this.id = Integer.toString(id);
         this.reachable = reachable;
         this.source = source;
     }
 
     public void drawVertex(Graphics2D g2d) {
+        // Draw a circle
         Ellipse2D.Double e = new Ellipse2D.Double(this.x, this.y, R, R);
         g2d.setColor(color);
         g2d.fill(e);
+        
+        // Draw a vertex ID inside the circle
+        g2d.drawString(this.id, this.x, this.y);
     }
 }
 
