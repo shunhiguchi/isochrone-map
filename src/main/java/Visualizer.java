@@ -33,11 +33,6 @@ public class Visualizer extends JComponent {
         g2d.fill(e);
     }
 
-//    protected void drawEdge(Graphics g) {
-//        Graphics2D g2d = (Graphics2D) g;
-//        Line2D l = new Line2D(100)
-//    }
-
     public static void main(String[] args) {
         int w = 640;
         int h = 480;
@@ -53,19 +48,25 @@ public class Visualizer extends JComponent {
 }
 
 class Vertex {
-    private final double x;
-    private final double y;
-    private final boolean within;
-    private final boolean source;
+    private final double x; // x coordinate of a vertex
+    private final double y; // y coordinate of a vertex
+    private final int id; // id of a vertex
+    private final boolean reachable; // vertex reachable within a specified cost
+    private final boolean source; // vertex is a source vertex
 
-    private static final int R = 50;
-    private static final Color color = new Color(100, 149, 237);
+    private static final int R = 50; // radius of a circle
 
-    public Vertex(int x, int y, int id, boolean within, boolean source) {
+    // Color of a vertex if reachable is true
+    private static final Color colorWithin = new Color(100, 149, 237);
+
+    // Color of a vertex if reachable is false
+    private static final Color colorNotWithin = Color.WHITE;
+
+    public Vertex(int x, int y, int id, boolean reachable, boolean source) {
         this.x = x - (double) R / 2;
         this.y = y - (double) R / 2;
         this.id = id;
-        this.within = within;
+        this.reachable = reachable;
         this.source = source;
     }
 
@@ -77,17 +78,20 @@ class Vertex {
 }
 
 class Edge {
-    private final int x1;
-    private final int y1;
-    private final int x2;
-    private final int y2;
-    private final boolean used;
+    private final int x1; // x coordinate of one end of a line
+    private final int y1; // y coordinate of one end of a line
+    private final int x2; // x coordinate of the other end of a line
+    private final int y2; // y coordinate of the other end of a line
+    private final boolean used; // edge is used for shortest paths
 
+    // Set a color of an edge
     private static final Color color = new Color(100, 149, 237);
 
+    // Set a stroke of an edge if it is used for shortest paths
     private static final BasicStroke bsDefault = new BasicStroke();
 
-    private float[] dash = {2f, 0f, 2f};
+    // Set a stroke of an edge if it is not used for shortest paths
+    private final float[] dash = {2f, 0f, 2f};
     private static final BasicStroke bsDashed = new BasicStroke(
             BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1.0f, dash, 2f
     );
