@@ -1,5 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -28,9 +29,17 @@ public class Visualizer extends JComponent {
                 RenderingHints.VALUE_ANTIALIAS_ON
         );
         g2d.setRenderingHints(rh);
-        Ellipse2D.Double e = new Ellipse2D.Double(50, 75, 25, 25);
-        g2d.setColor(new Color(100, 149, 237));
-        g2d.fill(e);
+
+        Edge e1 = new Edge(75, 75, 250, 75, true);
+        Edge e2 = new Edge(75, 75, 75, 150, false);
+        Vertex v1 = new Vertex(75, 75, 99, true, false);
+        Vertex v2 = new Vertex(250, 75, 99, true, false);
+        Vertex v3 = new Vertex(75, 150, 99, false, false);
+        e1.drawEdge(g2d);
+        e2.drawEdge(g2d);
+        v1.drawVertex(g2d);
+        v2.drawVertex(g2d);
+        v3.drawVertex(g2d);
     }
 
     public static void main(String[] args) {
@@ -38,45 +47,62 @@ public class Visualizer extends JComponent {
         int h = 480;
 
         JFrame f = new JFrame();
-        Visualizer v = new Visualizer(w, h);
         f.setSize(w, h);
         f.setTitle("Isochrone Map");
+
+        Visualizer v = new Visualizer(w, h);
         f.add(v);
+
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
     }
 }
 
 class Vertex {
-    private final double x; // x coordinate of a vertex
-    private final double y; // y coordinate of a vertex
+    private final float x; // x coordinate of a vertex
+    private final float y; // y coordinate of a vertex
     private final String id; // id of a vertex
     private final boolean reachable; // vertex reachable within a specified cost
     private final boolean source; // vertex is a source vertex
 
-    private static final int R = 50; // radius of a circle
+    // Radius of a circle
+    private static final int R = 50;
 
     // Color of a vertex if reachable is true
-    private static final Color colorWithin = new Color(100, 149, 237);
+    private static final Color colorReachable = new Color(100, 149, 237);
 
     // Color of a vertex if reachable is false
-    private static final Color colorNotWithin = Color.WHITE;
+    private static final Color colorNotReachable = Color.WHITE;
+
+    // Stroke of a vertex outline
+    private static final BasicStroke bsOutline = new BasicStroke();
 
     public Vertex(int x, int y, int id, boolean reachable, boolean source) {
-        this.x = x - (double) R / 2;
-        this.y = y - (double) R / 2;
+        this.x = x - (float) R / 2;
+        this.y = y - (float) R / 2;
         this.id = Integer.toString(id);
         this.reachable = reachable;
         this.source = source;
     }
 
     public void drawVertex(Graphics2D g2d) {
+
         // Draw a circle
-        Ellipse2D.Double e = new Ellipse2D.Double(this.x, this.y, R, R);
-        g2d.setColor(color);
-        g2d.fill(e);
-        
-        // Draw a vertex ID inside the circle
+        Ellipse2D.Double e = new Ellipse2D.Double(this.x, this.y, Vertex.R, Vertex.R);
+        if (reachable) {
+            g2d.setColor(Vertex.colorReachable);
+            g2d.fill(e);
+        }
+        else {
+            g2d.setColor(Vertex.colorNotReachable);
+            g2d.fill(e);
+            g2d.setColor(Vertex.colorReachable);
+            g2d.setStroke(bsOutline);
+            g2d.draw(e);
+        }
+
+        // Draw a vertex ID next to a circle
+        g2d.getFont().getSize2D();
         g2d.drawString(this.id, this.x, this.y);
     }
 }
@@ -95,9 +121,9 @@ class Edge {
     private static final BasicStroke bsDefault = new BasicStroke();
 
     // Set a stroke of an edge if it is not used for shortest paths
-    private final float[] dash = {2f, 0f, 2f};
+    private static final float[] dash = {2f, 0f, 2f};
     private static final BasicStroke bsDashed = new BasicStroke(
-            BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1.0f, dash, 2f
+            1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1.0f, Edge.dash, 2f
     );
 
     public Edge(int x1, int y1, int x2, int y2, boolean used) {
