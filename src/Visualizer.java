@@ -58,8 +58,8 @@ public class Visualizer extends JComponent {
 }
 
 class Vertex {
-    private final float x; // x coordinate of a vertex
-    private final float y; // y coordinate of a vertex
+    private final float x; // x coordinate of a top left bound of a circle
+    private final float y; // y coordinate of a top left bound of a circle
     private final String id; // id of a vertex
     private final boolean reachable; // vertex reachable within a specified cost
     private final boolean source; // vertex is a source vertex
@@ -67,16 +67,16 @@ class Vertex {
     // Radius of a circle
     private static final int R = 50;
 
-    // Color of a vertex if reachable is true
+    // Color of a circle if reachable is true
     private static final Color colorReachable = new Color(100, 149, 237);
 
-    // Color of a vertex if reachable is false
+    // Color of a circle if reachable is false
     private static final Color colorNotReachable = Color.WHITE;
 
     // Color of a circle for a source vertex
     private static final Color colorSource = new Color(31,102,229);
 
-    // Stroke of a vertex outline
+    // Stroke of a circle outline
     private static final BasicStroke bsOutline = new BasicStroke();
 
     public Vertex(int x, int y, int id, boolean reachable, boolean source) {
@@ -117,13 +117,13 @@ class Edge {
     private final int y2; // y coordinate of the other end of a line
     private final boolean used; // edge is used for shortest paths
 
-    // Set a color of an edge
+    // Set a color of a line
     private static final Color color = new Color(100, 149, 237);
 
-    // Set a stroke of an edge if it is used for shortest paths
+    // Set a stroke of a line if it is used for shortest paths
     private static final BasicStroke bsDefault = new BasicStroke();
 
-    // Set a stroke of an edge if it is not used for shortest paths
+    // Set a stroke of a line if it is not used for shortest paths
     private static final float[] dash = {2f, 0f, 2f};
     private static final BasicStroke bsDashed = new BasicStroke(
             1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1.0f, Edge.dash, 2f
@@ -138,6 +138,7 @@ class Edge {
     }
 
     public void drawEdge(Graphics2D g2d) {
+        // Draw a line
         Line2D.Double line = new Line2D.Double(this.x1, this.y1, this.x2, this.y2);
         if (used) g2d.setStroke(bsDefault); else g2d.setStroke(bsDashed);
         g2d.setColor(color);
