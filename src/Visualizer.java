@@ -1,6 +1,5 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -32,9 +31,9 @@ public class Visualizer extends JComponent {
 
         Edge e1 = new Edge(75, 75, 250, 75, true);
         Edge e2 = new Edge(75, 75, 75, 150, false);
-        Vertex v1 = new Vertex(75, 75, 99, true, false);
-        Vertex v2 = new Vertex(250, 75, 99, true, false);
-        Vertex v3 = new Vertex(75, 150, 99, false, false);
+        Vertex v1 = new Vertex(75, 75, 91, true, true);
+        Vertex v2 = new Vertex(250, 75, 92, true, false);
+        Vertex v3 = new Vertex(75, 150, 93, false, false);
         e1.drawEdge(g2d);
         e2.drawEdge(g2d);
         v1.drawVertex(g2d);
@@ -74,6 +73,9 @@ class Vertex {
     // Color of a vertex if reachable is false
     private static final Color colorNotReachable = Color.WHITE;
 
+    // Color of a circle for a source vertex
+    private static final Color colorSource = new Color(31,102,229);
+
     // Stroke of a vertex outline
     private static final BasicStroke bsOutline = new BasicStroke();
 
@@ -90,7 +92,8 @@ class Vertex {
         // Draw a circle
         Ellipse2D.Double e = new Ellipse2D.Double(this.x, this.y, Vertex.R, Vertex.R);
         if (reachable) {
-            g2d.setColor(Vertex.colorReachable);
+            if (source) g2d.setColor(Vertex.colorSource);
+            else g2d.setColor(Vertex.colorReachable);
             g2d.fill(e);
         }
         else {
