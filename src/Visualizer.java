@@ -8,17 +8,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 
 public class Visualizer extends JComponent {
 
-    private int width;
-    private int height;
-
-    public Visualizer (int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
+    public Visualizer () {}
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -39,21 +32,6 @@ public class Visualizer extends JComponent {
         v1.drawVertex(g2d);
         v2.drawVertex(g2d);
         v3.drawVertex(g2d);
-    }
-
-    public static void main(String[] args) {
-        int w = 640;
-        int h = 480;
-
-        JFrame f = new JFrame();
-        f.setSize(w, h);
-        f.setTitle("Isochrone Map");
-
-        Visualizer v = new Visualizer(w, h);
-        f.add(v);
-
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
     }
 }
 

@@ -1,8 +1,12 @@
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +75,8 @@ public class IsochroneMap {
          */
         for (int i = 0; i < dist.length; i++)
             System.out.println(sourceVertexId + " to " + i + " is " + dist[i]);
+
+
     }
 
     /**
@@ -80,6 +86,17 @@ public class IsochroneMap {
      */
     private int getV(String filePathVertices) throws IOException {
         return (int) Files.lines(Paths.get(filePathVertices)).count() - 1;
+    }
+
+    void visualizeIsochroneMap() {
+        JFrame f = new JFrame();
+        f.setSize(w, h);
+        f.setTitle("Isochrone Map");
+
+        f.add(new Visualizer());
+
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
     }
 
     /**
