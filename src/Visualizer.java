@@ -35,28 +35,11 @@ public class Visualizer extends JComponent {
         g2d.setRenderingHints(rh);
 
         // Draw edges
-        for (int id = 0; id < this.edges.length; id++) {
-            this.edges[id].drawEdge(g2d);
-        }
+        for (Edge e : this.edges) e.drawEdge(g2d);
 
+        // Draw vertices
+        for (Vertex v : this.vertices) v.drawEdge(g2d);
 
-    }
-
-    private void readVertices(String filePathVertices) {
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
-            String DELIMITER = ",";
-            String line;
-            line = br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split(DELIMITER);
-                int id = Integer.parseInt(columns[1]);
-                int x = Integer.parseInt(columns[2]);
-                int y = Integer.parseInt(columns[3]);
-                adj.get(fromVertex).add(new Node(toVertex, cost));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
 

@@ -104,6 +104,17 @@ public class IsochroneMap {
             e.printStackTrace();
         }
 
+        // Visualize Isochrone Map
+        JFrame f = new JFrame();
+        f.setSize(640, 480);
+        f.setTitle("Isochrone Map");
+
+        Visualizer v = new Visualizer(vertices, edges);
+        f.add(v);
+
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+
     }
 
     /**
@@ -114,6 +125,8 @@ public class IsochroneMap {
     private int getV(String filePathVertices) throws IOException {
         return (int) Files.lines(Paths.get(filePathVertices)).count() - 1;
     }
+
+
 
 
     /**
