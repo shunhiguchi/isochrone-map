@@ -14,54 +14,56 @@ import java.util.*;
 public class ShortestPath {
 
     private final int dist[]; // Distances from the source vertex
-    private final Set<Integer> prev; // Previously visited vertices
+    private final int prev[]; // Previous vertex in the shortest paths
+    private final Set<Integer> visited; // Previously visited vertices
     private PriorityQueue<Node> pq; // Priority queue to store vertices
 
     private int V;
-    List<List<Node>> adj;
+    private List<List<Node>> adj;
 
     public ShortestPath(int V) {
         this.V = V;
-        dist = new int[V];
-        prev = new HashSet<Integer>();
-        pq = new PriorityQueue<Node>(V, new Node());
+        this.dist = new int[V];
+        this.prev = new int[V];
+        this.visited = new HashSet<Integer>();
+        this.pq = new PriorityQueue<Node>(V, new Node());
     }
 
     /**
      * Dijkstra's shortest path algorithm.
      * @param adj adjacency-lists digraph representation
      * @param src source vertex ID
-     * @return an integer array of distance from a source vertex to vertex i
+     * @return an array containing an array of distances and array of previous vertices
      */
-    public int[] dijkstra(List<List<Node>> adj, int src)     {
+    public Object[] dijkstra(List<List<Node>> adj, int src)     {
         this.adj = adj;
 
         // Initialize distances to each node to a maximum integer value
         for (int i = 0; i < V; i++)
-            dist[i] = Integer.MAX_VALUE;
+            this.dist[i] = Integer.MAX_VALUE;
 
         // Add a source vertex and set the distance to it as 0
-        pq.add(new Node(src, 0));
-        dist[src] = 0;
+        this.pq.add(new Node(src, 0));
+        this.dist[src] = 0;
 
         // Iterate until all vertices are visited
-        while (prev.size() != V) {
+        while (this.visited.size() != V) {
             // Terminate if the priority queue is empty
-            if (pq.isEmpty()) break;
+            if (this.pq.isEmpty()) break;
 
             /* Remove the minimum distance vertex from the priority queue and
              * add it to the list of visited vertices. Process neighbouring
              * vertices.
              */
-            int u = pq.remove().node;
+            int u = this.pq.remove().node;
 
-            if (prev.contains(u)) continue;
+            if (this.visited.contains(u)) continue;
 
-            prev.add(u);
+            this.visited.add(u);
             processNeighbours(u);
         }
 
-        return dist;
+        return new Object[]{dist, prev};
     }
 
     /**
@@ -72,19 +74,20 @@ public class ShortestPath {
         int edgeDistance = -1;
         int newDistance = -1;
 
-        for (int i = 0; i < adj.get(u).size(); i++) {
-            Node v = adj.get(u).get(i);
+        for (int i = 0; i < this.adj.get(u).size(); i++) {
+            Node v = this.adj.get(u).get(i);
 
             /* If the neighbouring node hasn't been previously processed,
              * compute the new distance and update the shortest distance to the
              * node if applicable.
              */
-            if (!prev.contains(v.node)) {
+            if (!this.visited.contains(v.node)) {
                 edgeDistance = v.cost;
                 newDistance = dist[u] + edgeDistance;
 
                 if (newDistance < dist[v.node])
                     dist[v.node] = newDistance;
+                    prev[v.node] = u;
 
                 pq.add(new Node(v.node, dist[v.node]));
             }
