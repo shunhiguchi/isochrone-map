@@ -1,3 +1,9 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +17,13 @@ import javax.swing.JComponent;
 
 public class Visualizer extends JComponent {
 
-    public Visualizer () {}
+    private final Vertex[] vertices;
+    private final Edge[] edges;
+
+    public Visualizer (Vertex[] vertices, Edge[] edges) {
+        this.vertices = vertices;
+        this.edges = edges;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -22,22 +34,37 @@ public class Visualizer extends JComponent {
         );
         g2d.setRenderingHints(rh);
 
-        Edge e1 = new Edge(75, 75, 250, 75, true);
-        Edge e2 = new Edge(75, 75, 75, 150, false);
-        Vertex v1 = new Vertex(75, 75, 91, true, true);
-        Vertex v2 = new Vertex(250, 75, 92, true, false);
-        Vertex v3 = new Vertex(75, 150, 93, false, false);
-        e1.drawEdge(g2d);
-        e2.drawEdge(g2d);
-        v1.drawVertex(g2d);
-        v2.drawVertex(g2d);
-        v3.drawVertex(g2d);
+        // Draw edges
+        for (int id = 0; id < this.edges.length; id++) {
+            this.edges[id].drawEdge(g2d);
+        }
+
+
+    }
+
+    private void readVertices(String filePathVertices) {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
+            String DELIMITER = ",";
+            String line;
+            line = br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(DELIMITER);
+                int id = Integer.parseInt(columns[1]);
+                int x = Integer.parseInt(columns[2]);
+                int y = Integer.parseInt(columns[3]);
+                adj.get(fromVertex).add(new Node(toVertex, cost));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
 class Vertex {
-    private final float x; // x coordinate of a top left bound of a circle
-    private final float y; // y coordinate of a top left bound of a circle
+    final int x; // x coordinate of a centre of a circle
+    final int y; // y coordinate of a centre of a circle
+    private final float xtl; // x coordinate of a top left bound of a circle
+    private final float ytl; // y coordinate of a top left bound of a circle
     private final String id; // id of a vertex
     private final boolean reachable; // vertex reachable within a specified cost
     private final boolean source; // vertex is a source vertex
@@ -58,8 +85,10 @@ class Vertex {
     private static final BasicStroke bsOutline = new BasicStroke();
 
     public Vertex(int x, int y, int id, boolean reachable, boolean source) {
-        this.x = x - (float) R / 2;
-        this.y = y - (float) R / 2;
+        this.x = x;
+        this.y = y;
+        this.xtl = x - (float) R / 2;
+        this.ytl = y - (float) R / 2;
         this.id = Integer.toString(id);
         this.reachable = reachable;
         this.source = source;
@@ -68,7 +97,7 @@ class Vertex {
     public void drawVertex(Graphics2D g2d) {
 
         // Draw a circle
-        Ellipse2D.Double e = new Ellipse2D.Double(this.x, this.y, Vertex.R, Vertex.R);
+        Ellipse2D.Double e = new Ellipse2D.Double(this.xtl, this.ytl, Vertex.R, Vertex.R);
         if (reachable) {
             if (source) g2d.setColor(Vertex.colorSource);
             else g2d.setColor(Vertex.colorReachable);

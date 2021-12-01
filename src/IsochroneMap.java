@@ -2,7 +2,10 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,17 +16,18 @@ import java.util.List;
 /**
  * Identify nodes accessible within a threshold distance.
  * Usage: IsochroneMap vertices.csv edges.csv 0 10
- * @param args
  */
 public class IsochroneMap {
 
     private int V;
+    private int E;
     private int[] dist;
     private int[] prev;
     private int sourceVertexId;
     private int thresholdDist;
 
-    public IsochroneMap(String filePathVertices, String filePathEdges, int sourceVertexId, int thresholdDist) throws IOException {
+    public IsochroneMap(String filePathVertices, String filePathEdges, String filePathResults,
+                        int sourceVertexId, int thresholdDist) throws IOException {
         // Number of vertices
         this.V = getV(filePathVertices);
 
@@ -37,6 +41,7 @@ public class IsochroneMap {
             adj.add(item);
         }
 
+        this.E = 0;
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
             String DELIMITER = ",";
             String line;
@@ -47,6 +52,7 @@ public class IsochroneMap {
                 int toVertex = Integer.parseInt(columns[2]);
                 int cost = Integer.parseInt(columns[3]);
                 adj.get(fromVertex).add(new Node(toVertex, cost));
+                E++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,22 +64,46 @@ public class IsochroneMap {
         this.dist = temp.get(0);
         this.prev = temp.get(1);
 
+        // Create vertices
+        Vertex[] vertices = new Vertex[this.V];
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
+            String DELIMITER = ",";
+            String line;
+            line = br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(DELIMITER);
+                int id = Integer.parseInt(columns[0]);
+                int x = Integer.parseInt(columns[1]);
+                int y = Integer.parseInt(columns[2]);
+                boolean reachable = (dist[id] <= thresholdDist);
+                boolean source = (id == sourceVertexId);
+                vertices[id] = new Vertex(x, y, id, reachable, source);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        /**
-         * Mark nodes with their shortest path distances within the threshold
-         * distance. Mark edges used as part of the shortest paths.
-         */
+        // Create edges
+        Edge[] edges = new Edge[this.E];
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
+            String DELIMITER = ",";
+            String line;
+            line = br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(DELIMITER);
+                int id = Integer.parseInt(columns[0]);
+                int fromNode = Integer.parseInt(columns[1]);
+                int toNode = Integer.parseInt(columns[2]);
+                int x1 = vertices[fromNode].x;
+                int y1 = vertices[fromNode].y;
+                int x2 = vertices[toNode].x;
+                int y2 = vertices[toNode].y;
+                edges[id] = new Edge(x1, y1, x2, y2, true);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        /**
-         * Export the nodes and edges.
-         */
-
-        /**
-         * Visualize the isochrone map.
-         */
-        System.out.println("dist\tprev");
-        for (int i = 0; i < dist.length; i++)
-            System.out.println(dist[i] + "\t" + prev[i]);
     }
 
     /**
@@ -85,16 +115,6 @@ public class IsochroneMap {
         return (int) Files.lines(Paths.get(filePathVertices)).count() - 1;
     }
 
-//    void visualizeIsochroneMap() {
-//        JFrame f = new JFrame();
-//        f.setSize(w, h);
-//        f.setTitle("Isochrone Map");
-//
-//        f.add(new Visualizer());
-//
-//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        f.setVisible(true);
-//    }
 
     /**
      * Test client.
@@ -103,12 +123,13 @@ public class IsochroneMap {
     public static void main(String[] args) {
         String filePathVertices = args[0];
         String filePathEdges = args[1];
-        int startVertexId = Integer.parseInt(args[2]);
-        int thresholdDist = Integer.parseInt(args[3]);
+        String filePathResults = args[2];
+        int sourceVertexId = Integer.parseInt(args[3]);
+        int thresholdDist = Integer.parseInt(args[4]);
 
         try {
             IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,
-                    filePathEdges, startVertexId, thresholdDist);
+                    filePathEdges, filePathResults, sourceVertexId, thresholdDist);
         } catch (IOException e) {
             e.printStackTrace();
         }
