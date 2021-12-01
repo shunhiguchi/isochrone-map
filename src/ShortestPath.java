@@ -8,16 +8,14 @@ import java.util.*;
 
 /**
  * The ShortestPath class provides a method for computing the single-source
- * shortest paths for a weighted directed graph.
+ * shortest paths for a weighted directed graph. The Dijkstra's shortest path
+ * algorithm is implemented with priority queues.
  */
 public class ShortestPath {
-    /*
-     * Dijkstra's shortest path algorithm implemented with priority queues.
-     */
 
-    private int dist[];
-    private Set<Integer> prev;
-    private PriorityQueue<Node> pq;
+    private final int dist[]; // Distances from the source vertex
+    private final Set<Integer> prev; // Previously visited vertices
+    private PriorityQueue<Node> pq; // Priority queue to store vertices
 
     private int V;
     List<List<Node>> adj;
@@ -31,27 +29,29 @@ public class ShortestPath {
 
     /**
      * Dijkstra's shortest path algorithm.
-     * @param adj
-     * @param src
+     * @param adj adjacency-lists digraph representation
+     * @param src source vertex ID
      * @return an integer array of distance from a source vertex to vertex i
      */
     public int[] dijkstra(List<List<Node>> adj, int src)     {
         this.adj = adj;
 
-        /* Initialize distances to each node to a maximum integer value. */
+        // Initialize distances to each node to a maximum integer value
         for (int i = 0; i < V; i++)
             dist[i] = Integer.MAX_VALUE;
 
-        /* Add a source node and set the distance to it as 0. */
+        // Add a source vertex and set the distance to it as 0
         pq.add(new Node(src, 0));
         dist[src] = 0;
 
+        // Iterate until all vertices are visited
         while (prev.size() != V) {
-            /* Terminate if the priority queue is empty. */
+            // Terminate if the priority queue is empty
             if (pq.isEmpty()) break;
 
-            /* Remove the minimum distance node from the priority queue and
-             * add it to the list of previous nodes. Process neighbouring nodes.
+            /* Remove the minimum distance vertex from the priority queue and
+             * add it to the list of visited vertices. Process neighbouring
+             * vertices.
              */
             int u = pq.remove().node;
 
@@ -112,7 +112,8 @@ class Node implements Comparator<Node> {
      * @param n2 the other node
      * @return -1, 0, or 1 representing comparison
      */
-    @Override public int compare(Node n1, Node n2)     {
+    @Override
+    public int compare(Node n1, Node n2)     {
         if (n1.cost < n2.cost) return -1;
         else if (n1.cost > n2.cost) return 1;
         else return 0;
