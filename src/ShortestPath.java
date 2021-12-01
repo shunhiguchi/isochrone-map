@@ -4,7 +4,12 @@
  * Computes the shortest paths (single source) for a weighted directed graph.
  */
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  * The ShortestPath class provides a method for computing the single-source
@@ -35,7 +40,7 @@ public class ShortestPath {
      * @param src source vertex ID
      * @return an array containing an array of distances and array of previous vertices
      */
-    public Object[] dijkstra(List<List<Node>> adj, int src)     {
+    public List<int[]> dijkstra(List<List<Node>> adj, int src)     {
         this.adj = adj;
 
         // Initialize distances to each node to a maximum integer value
@@ -63,7 +68,7 @@ public class ShortestPath {
             processNeighbours(u);
         }
 
-        return new Object[]{dist, prev};
+        return Arrays.asList(dist, prev);
     }
 
     /**
