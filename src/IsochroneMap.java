@@ -10,30 +10,27 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Identify nodes accessible within a threshold distance.
+ * Usage: IsochroneMap vertices.csv edges.csv 0 10
+ * @param args
+ */
 public class IsochroneMap {
-    /**
-     * Identify nodes accessible within a threshold distance.
-     * Usage: IsochroneMap vertices.csv edges.csv 0 10
-     * @param args
-     */
+
     private int V;
     private int[] dist;
+    private int[] prev;
     private int sourceVertexId;
     private int thresholdDist;
+
     public IsochroneMap(String filePathVertices, String filePathEdges, int sourceVertexId, int thresholdDist) throws IOException {
-        /**
-         * Define the number of vertices.
-         */
+        // Number of vertices
         this.V = getV(filePathVertices);
 
-        /**
-         * Set the source vertex ID.
-         */
+        // Source vertex ID
         this.sourceVertexId = sourceVertexId;
 
-        /**
-         * Load nodes and edges from input files.
-         */
+        // Load vertices and edges from input files
         List<List<Node>> adj = new ArrayList<List<Node>>();
         for (int i = 0; i < V; i++) {
             List<Node> item = new ArrayList<Node>();
@@ -55,11 +52,12 @@ public class IsochroneMap {
             e.printStackTrace();
         }
 
-        /**
-         * Compute the shortest path distances to all nodes.
-         */
+        // Compute the shortest paths
         ShortestPath sp = new ShortestPath(V);
-        int[] dist = sp.dijkstra(adj, this.sourceVertexId);
+        List<int[]> temp = sp.dijkstra(adj, this.sourceVertexId);
+        this.dist = temp.get(0);
+        this.prev = temp.get(1);
+
 
         /**
          * Mark nodes with their shortest path distances within the threshold
@@ -73,10 +71,9 @@ public class IsochroneMap {
         /**
          * Visualize the isochrone map.
          */
+        System.out.println("dist\tprev");
         for (int i = 0; i < dist.length; i++)
-            System.out.println(sourceVertexId + " to " + i + " is " + dist[i]);
-
-
+            System.out.println(dist[i] + "\t" + prev[i]);
     }
 
     /**
@@ -88,16 +85,16 @@ public class IsochroneMap {
         return (int) Files.lines(Paths.get(filePathVertices)).count() - 1;
     }
 
-    void visualizeIsochroneMap() {
-        JFrame f = new JFrame();
-        f.setSize(w, h);
-        f.setTitle("Isochrone Map");
-
-        f.add(new Visualizer());
-
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
-    }
+//    void visualizeIsochroneMap() {
+//        JFrame f = new JFrame();
+//        f.setSize(w, h);
+//        f.setTitle("Isochrone Map");
+//
+//        f.add(new Visualizer());
+//
+//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        f.setVisible(true);
+//    }
 
     /**
      * Test client.
