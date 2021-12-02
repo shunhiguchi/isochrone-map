@@ -26,7 +26,7 @@ public class IsochroneMap {
     private int sourceVertexId;
     private int thresholdDist;
 
-    public IsochroneMap(String filePathVertices, String filePathEdges, String filePathResults,
+    public IsochroneMap(String filePathVertices, String filePathEdges,
                         int sourceVertexId, int thresholdDist) throws IOException {
         // Number of vertices
         this.V = getV(filePathVertices);
@@ -136,13 +136,12 @@ public class IsochroneMap {
     public static void main(String[] args) {
         String filePathVertices = args[0];
         String filePathEdges = args[1];
-        String filePathResults = args[2];
         int sourceVertexId = Integer.parseInt(args[3]);
         int thresholdDist = Integer.parseInt(args[4]);
 
         try {
             IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,
-                    filePathEdges, filePathResults, sourceVertexId, thresholdDist);
+                    filePathEdges, sourceVertexId, thresholdDist);
         } catch (IOException e) {
             e.printStackTrace();
         }
