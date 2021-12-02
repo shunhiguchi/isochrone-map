@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,12 +8,15 @@ import java.util.List;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JComponent;
 
@@ -94,18 +99,28 @@ class Vertex {
             g2d.draw(e);
         }
 
-        // Draw a vertex ID next to a circle
-        g2d.getFont().getSize2D();
-        g2d.drawString(this.id, this.x, this.y);
+        // Draw a vertex ID in a circle, centred
+        Font f = g2d.getFont();
+        if (reachable) g2d.setColor(Vertex.colorNotReachable);
+        else g2d.setColor(Vertex.colorReachable);
+        FontMetrics fm = g2d.getFontMetrics(f);
+        Rectangle2D rect = fm.getStringBounds(this.id, g2d);
+        int textHeight = (int)(rect.getHeight());
+        int textWidth  = (int)(rect.getWidth());
+        float xid = this.x - (float) textWidth / 2;
+        float yid = this.y - (float) textHeight / 2 + fm.getAscent();
+        g2d.drawString(this.id, xid, yid);
     }
+
+
 }
 
 class Edge {
-    private final int x1; // x coordinate of one end of a line
-    private final int y1; // y coordinate of one end of a line
-    private final int x2; // x coordinate of the other end of a line
-    private final int y2; // y coordinate of the other end of a line
-    private final boolean used; // edge is used for shortest paths
+    public final int x1; // x coordinate of one end of a line
+    public final int y1; // y coordinate of one end of a line
+    public final int x2; // x coordinate of the other end of a line
+    public final int y2; // y coordinate of the other end of a line
+    public boolean used; // edge is used for shortest paths
 
     // Set a color of a line
     private static final Color color = new Color(100, 149, 237);

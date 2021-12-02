@@ -11,7 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Identify nodes accessible within a threshold distance.
@@ -66,7 +68,7 @@ public class IsochroneMap {
 
         // Create vertices
         Vertex[] vertices = new Vertex[this.V];
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathVertices))) {
             String DELIMITER = ",";
             String line;
             line = br.readLine();
@@ -85,6 +87,7 @@ public class IsochroneMap {
 
         // Create edges
         Edge[] edges = new Edge[this.E];
+        Map<String, Integer> edgesFromVertices = new HashMap<String, Integer>();
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
             String DELIMITER = ",";
             String line;
@@ -98,10 +101,24 @@ public class IsochroneMap {
                 int y1 = vertices[fromNode].y;
                 int x2 = vertices[toNode].x;
                 int y2 = vertices[toNode].y;
-                edges[id] = new Edge(x1, y1, x2, y2, true);
+                String fromToNodePair = columns[1] + "-" + columns[2];
+                edgesFromVertices.put(fromToNodePair, id);
+                edges[id] = new Edge(x1, y1, x2, y2, false);
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // Determine if each edge is part of the shortest paths
+        for (int i = 0; i < this.prev.length; i++) {
+            int fromNode;
+            int toNode = i;
+            while (toNode != sourceVertexId) {
+                fromNode = prev[toNode];
+                String fromToNodePair = Integer.toString(fromNode) + "-" + Integer.toString(toNode);
+                edges[edgesFromVertices.get(fromToNodePair)].used = true;
+                toNode = fromNode;
+            }
         }
 
         // Visualize Isochrone Map
@@ -136,8 +153,8 @@ public class IsochroneMap {
     public static void main(String[] args) {
         String filePathVertices = args[0];
         String filePathEdges = args[1];
-        int sourceVertexId = Integer.parseInt(args[3]);
-        int thresholdDist = Integer.parseInt(args[4]);
+        int sourceVertexId = Integer.parseInt(args[2]);
+        int thresholdDist = Integer.parseInt(args[3]);
 
         try {
             IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,
