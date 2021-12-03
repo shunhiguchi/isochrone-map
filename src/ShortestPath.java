@@ -101,7 +101,7 @@ public class ShortestPath {
 }
 
 /**
- *  Node in the graph.
+ *  Node in digraph.
  */
 class Node implements Comparator<Node> {
 
