@@ -17,6 +17,7 @@ $ cd src
 ```
 
 Build the project
+
 ```bash
 $ javac *.java
 ```
@@ -31,4 +32,4 @@ $ java IsochroneMap vertices.csv edges.csv 6 7
 
 ## License
 
-See [LICENSE](LICENSE)
+See [LICENSE](LICENSE).
