@@ -69,7 +69,7 @@ class Vertex {
     private final float ytl; // y coordinate of a top left bound of a circle
 
     // Radius of a circle
-    private static final int R = 30;
+    private static final int R = 40;
 
     // Color of a circle if reachable is true
     private static final Color colorDark = new Color(100, 149, 237);
@@ -111,7 +111,7 @@ class Vertex {
         // Draw a circle
         Ellipse2D.Double e = new Ellipse2D.Double(this.xtl, this.ytl, Vertex.R, Vertex.R);
         if (this.source) g2d.setColor(Vertex.colorSource);
-        else if (this.reachable) g2d.setColor(Vertex.colorSource);
+        else if (this.reachable) g2d.setColor(Vertex.colorDark);
         else g2d.setColor(Vertex.colorLight);
         g2d.fill(e);
 

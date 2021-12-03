@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class IsochroneMap {
 
-    private final int V;
-    private final int E;
+    private int V;
+    private int E;
     private final int[] dist;
     private final int[] prev;
     private final int sourceVertexId;
@@ -121,7 +121,7 @@ public class IsochroneMap {
 
         // Visualize Isochrone Map
         JFrame f = new JFrame();
-        f.setSize(640, 480);
+        f.setSize(900, 600);
         f.setTitle("Isochrone Map");
 
         Visualizer v = new Visualizer(vertices, edges);
