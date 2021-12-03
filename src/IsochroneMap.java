@@ -103,7 +103,7 @@ public class IsochroneMap {
                 int y2 = vertices[toNode].y;
                 String fromToNodePair = columns[1] + "-" + columns[2];
                 edgesFromVertices.put(fromToNodePair, id);
-                edges[id] = new Edge(x1, y1, x2, y2, false);
+                edges[id] = new Edge(id, x1, y1, x2, y2, false);
             }
         } catch (IOException e) {
             e.printStackTrace();
