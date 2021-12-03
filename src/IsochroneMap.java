@@ -79,7 +79,7 @@ public class IsochroneMap {
                 int y = Integer.parseInt(columns[2]);
                 boolean reachable = (dist[id] <= thresholdDist);
                 boolean source = (id == sourceVertexId);
-                vertices[id] = new Vertex(x, y, id, reachable, source);
+                vertices[id] = new Vertex(id, x, y, reachable, source);
             }
         } catch (IOException e) {
             e.printStackTrace();
