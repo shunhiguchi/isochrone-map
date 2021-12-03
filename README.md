@@ -4,23 +4,13 @@ Project under construction.
 
 A desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm using priority queues.
 
-## Getting started
+## Setup
 
-Clone this repository
+To run this project, install it locally:
 
 ```bash
 $ git clone https://github.com/shunhiguchi/isochrone-map.git
-```
-
-Change directory to the source directory
-
-```bash
 $ cd src
-```
-
-Build the project
-
-```bash
 $ javac *.java
 ```
 
