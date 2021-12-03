@@ -2,7 +2,7 @@
 
 Project under construction.
 
-A desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm using priority queues. An isochrone map like a travel time map shows us how far we can reach within a certain period. Such map is extremely handy when trying to decide where to live. In the infrastucture planning industry, it is useful for transit and active transportation planning because it demonstrates how accessibl or convenient the transportation network is.
+A desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm using priority queues. An isochrone map like a travel time map shows us how far we can reach within a certain period. Such map is extremely handy when trying to decide where to live in a new city. In the infrastucture planning industry, it is useful for transit and active transportation planning because it demonstrates how accessibl or convenient the transportation network is.
 
 ## Features
 
