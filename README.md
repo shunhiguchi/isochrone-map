@@ -2,6 +2,8 @@
 
 Project under construction.
 
+A desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm using priority queues.
+
 ## Getting started
 
 Clone this repository
