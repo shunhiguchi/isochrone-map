@@ -6,7 +6,7 @@ A desktop app to produce an isochrone map, implemented in Java with Dijkstra's s
 
 ## Features
 
-Lorem.
+Produces an isochrone map. If vertices are reachable with a specified threshold, they're displayed with a light blue fill. Else, they're displayed with a white fill. A source vertex is indicated with dark blue. Edges which are used as shortest paths to the reachable vertices are displayed with a solid line whereas others are displayed with a dashed line.
 
 ![Screenshot of a sample isochrone map](/img/sample-isochrone-map.png "Sample isochrone map")
 
