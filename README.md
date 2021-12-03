@@ -8,7 +8,7 @@ A desktop app to produce an isochrone map, implemented in Java with Dijkstra's s
 
 Lorem.
 
-[Screenshot of a sample isochrone map](/img/screenshot-isochrone-map.png "Sample isochrone map)
+![Screenshot of a sample isochrone map](/img/screenshot-isochrone-map.png "Sample isochrone map)
 
 ## Implementation
 
