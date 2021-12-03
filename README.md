@@ -6,11 +6,21 @@ A desktop app to produce an isochrone map, implemented in Java with Dijkstra's s
 
 ## Setup
 
-To run this project, install it locally:
+Clone this project:
 
 ```bash
 $ git clone https://github.com/shunhiguchi/isochrone-map.git
+```
+
+Change directory to the source directory:
+
+```bash
 $ cd src
+```
+
+Build the project:
+
+```bash
 $ javac *.java
 ```
 
