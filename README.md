@@ -18,7 +18,7 @@ $ cd src
 
 Build the project
 ```bash
-javac *.java
+$ javac *.java
 ```
 
 ## Usage
