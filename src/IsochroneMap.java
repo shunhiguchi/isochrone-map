@@ -2,10 +2,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,11 +18,11 @@ import java.util.Map;
  */
 public class IsochroneMap {
 
-    private int V;
-    private int E;
-    private int[] dist;
-    private int[] prev;
-    private int sourceVertexId;
+    private final int V;
+    private final int E;
+    private final int[] dist;
+    private final int[] prev;
+    private final int sourceVertexId;
     private int thresholdDist;
 
     public IsochroneMap(String filePathVertices, String filePathEdges,
@@ -111,6 +108,7 @@ public class IsochroneMap {
 
         // Determine if each edge is part of the shortest paths
         for (int i = 0; i < this.prev.length; i++) {
+            if (!vertices[i].reachable) continue;
             int fromNode;
             int toNode = i;
             while (toNode != sourceVertexId) {
