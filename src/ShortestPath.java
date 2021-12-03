@@ -1,9 +1,3 @@
-/**
- * ShortestPath.java
- *
- * Computes the shortest paths (single source) for a weighted directed graph.
- */
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
