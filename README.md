@@ -8,7 +8,7 @@ A desktop app to produce an isochrone map, implemented in Java with Dijkstra's s
 
 Lorem.
 
-![Screenshot of a sample isochrone map](img/screenshot-isochrone-map.png "Sample isochrone map)
+![Screenshot of a sample isochrone map](/img/screenshot-isochrone-map.png "Sample isochrone map)
 
 ## Implementation
 
@@ -44,4 +44,4 @@ $ java IsochroneMap vertices.csv edges.csv 6 7
 
 ## License
 
-See [LICENSE](LICENSE).
+See [LICENSE](/LICENSE).
