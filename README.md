@@ -10,7 +10,7 @@ Produces an isochrone map. If vertices are reachable with a specified threshold,
 
 ## Implementation
 
-Dijkstra's algorithm is used as a shortest path algorithm and is implemented using priority queues in Java. This implementation of Dijkstra's algorithm has the worst case performance of `Ο((|V| + |E|)log|V|)` where `V` is the number of vertices and `E` is the number of edges. This is better than the implementation without priority queues with `Ο((|V|²)`.
+Dijkstra's algorithm is used as a shortest path algorithm and is implemented using priority queues in Java. This implementation of Dijkstra's algorithm has the worst case performance of `Ο((|V| + |E|)log|V|)` where `V` is the number of vertices and `E` is the number of edges. This is better than the implementation without priority queues with `Ο(|V|²)`.
 
 ## Setup
 
