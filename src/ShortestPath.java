@@ -12,8 +12,8 @@ import java.util.Set;
  */
 public class ShortestPath {
 
-    private final int dist[]; // Distances from the source vertex
-    private final int prev[]; // Previous vertex in the shortest paths
+    public final int dist[]; // Distances from the source vertex
+    public final int prev[]; // Previous vertex in the shortest paths
     private final Set<Integer> visited; // Previously visited vertices
     private PriorityQueue<Node> pq; // Priority queue to store vertices
 
@@ -34,7 +34,7 @@ public class ShortestPath {
      * @param src source vertex ID
      * @return an array containing an array of distances and array of previous vertices
      */
-    public List<int[]> dijkstra(List<List<Node>> adj, int src)     {
+    public void dijkstra(List<List<Node>> adj, int src)     {
         this.adj = adj;
 
         // Initialize distances to each node to a maximum integer value
@@ -61,7 +61,7 @@ public class ShortestPath {
             this.visited.add(u);
             processNeighbours(u);
         }
-        return Arrays.asList(dist, prev);
+        return;
     }
 
     /**
