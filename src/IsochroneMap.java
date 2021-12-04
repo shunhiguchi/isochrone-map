@@ -19,6 +19,7 @@ final String DELIMITER = ",";
  * Usage: IsochroneMap vertices.csv edges.csv 0 10
  */
 public class IsochroneMap {
+    // DEBUG: Move these attributes to the main function
     private int V = 0; // Number of vertices
     private int E = 0; // Number of edges
     private final int[] dist; // Distance from a source vertex
@@ -56,8 +57,8 @@ public class IsochroneMap {
         // Compute the shortest paths
         ShortestPath sp = new ShortestPath(V);
         List<int[]> temp = sp.dijkstra(adj, this.sourceVertexId);
-        this.dist = temp.get(0);
-        this.prev = temp.get(1);
+        this.dist = sp.dist;
+        this.prev = sp.prev;
 
         // Create vertices
         Vertex[] vertices = new Vertex[this.V];
