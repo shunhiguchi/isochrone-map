@@ -1,16 +1,16 @@
 # Isochrone Map
 
-A desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm. An isochrone map like a travel time map shows us how far we can reach within a certain period. Such map is extremely handy when trying to decide where to live in a new city. In city planning, it is useful in demonstrating the connectivity and accessibility of transit and active transportation network.
+A desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm. An isochrone map, like a travel time map, shows us how far we can reach within a certain time period. This type of map is handy when you want to know what's around you, when deSuch map is extremely handy when trying to decide where to live in a new city. In city planning, it is useful in demonstrating the connectivity and accessibility of transit and active transportation network.
 
 ## Features
 
-Produces an isochrone map. If vertices are reachable with a specified threshold, they're displayed with a light blue fill. Else, they're displayed with a white fill. A source vertex is marked with dark blue. Edges which are used as shortest paths to the reachable vertices are displayed with a solid line whereas others are displayed with a dashed line.
+Produces an isochrone map. If vertices are reachable within a specified threshold, they're displayed with a light blue fill. Otherwise, they're displayed with a white fill. A source vertex is marked with dark blue. Edges which are used as shortest paths to the reachable vertices are displayed with a solid line whereas others are displayed with a dashed line.
 
 ![Screenshot of a sample isochrone map](/img/sample-isochrone-map.png "Sample isochrone map")
 
 ## Implementation
 
-Dijkstra's algorithm is used as a shortest path algorithm and is implemented using priority queues in Java. This implementation of Dijkstra's algorithm has the worst case performance of `Ο((|V|+|E|)log|V|)` where `V` is the number of vertices and `E` is the number of edges. This is better than the implementation without priority queues with `Ο(|V|²)`.
+To compute the shortest paths, Dijkstra's algorithm is chosen and implemented using priority queues in Java. This implementation of Dijkstra's algorithm has the worst case performance of `Ο((|V|+|E|)log|V|)` where `V` is the number of vertices and `E` is the number of edges. This is better than the implementation without priority queues that has a performance of `Ο(|V|²)`.
 
 ## Setup
 
