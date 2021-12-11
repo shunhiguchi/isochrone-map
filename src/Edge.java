@@ -44,7 +44,7 @@ public class Edge {
      * The edge is part of the shortest paths to vertices reachable within the
      * threshold cost.
      */
-    public final boolean isShortestPath;
+    public boolean isShortestPath;
 
     /*
      * Constructor.

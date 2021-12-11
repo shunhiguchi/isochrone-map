@@ -31,13 +31,13 @@ public class Vertex implements Comparator<Vertex> {
     private static final BasicStroke strokeDefault = new BasicStroke();
 
     /* id of the vertex. */
-    public final int id;
+    public int id;
 
     /* x coordinate of the vertex. */
-    public final int x;
+    public int x;
 
     /* y coordinate of the vertex. */
-    public final int y;
+    public int y;
 
     /* Cumulative cost to the vertex from the source vertex. */
     public int cost;
@@ -52,10 +52,10 @@ public class Vertex implements Comparator<Vertex> {
     public boolean isReachable;
 
     /* x coordinate of the top left corner of the vertex bound shape. */
-    private final float xtl;
+    private float xtl;
 
     /* y coordinate of the top left corner of the vertex bound shape. */
-    private final float ytl;
+    private float ytl;
 
     /*
      * Constructor.
@@ -68,15 +68,10 @@ public class Vertex implements Comparator<Vertex> {
         this.ytl = y - (float) R / 2;
         this.isSource = false;
         this.isReachable = false;
+        this.cost = Integer.MAX_VALUE;
     }
 
-    /*
-     * Compare two vertices based on their cumulative costs.
-     */
-    @Override
-    public int compare(Vertex v1, Vertex v2) {
-        return Integer.compare(v1.cost, v2.cost);
-    }
+    public Vertex() {}
 
     /*
      * Draw the vertex. Different colours are used depending on if the vertex is
@@ -113,5 +108,13 @@ public class Vertex implements Comparator<Vertex> {
         float yid = this.y - (float) textHeight / 2 + fm.getAscent();
 
         g2d.drawString(idString, xid, yid);
+    }
+
+    /*
+     * Compare two vertices based on their cumulative costs.
+     */
+    @Override
+    public int compare(Vertex v1, Vertex v2) {
+        return Integer.compare(v1.cost, v2.cost);
     }
 }

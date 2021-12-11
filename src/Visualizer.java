@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.HashMap;
 import javax.swing.JComponent;
 
 /**
@@ -9,13 +10,16 @@ import javax.swing.JComponent;
  */
 public class Visualizer extends JComponent {
 
-    private final Vertex[] vertices;
-    private final Edge[] edges;
+    /* Map of vertices. */
+    private HashMap<Integer, Vertex> vertices;
+
+    /* Map of edges. */
+    private HashMap<Integer, Edge> edges;
 
     /*
      * Constructor.
      */
-    public Visualizer (Vertex[] vertices, Edge[] edges) {
+    public Visualizer (HashMap<Integer, Vertex> vertices, HashMap<Integer, Edge> edges) {
         this.vertices = vertices;
         this.edges = edges;
     }
@@ -32,8 +36,8 @@ public class Visualizer extends JComponent {
         );
         g2d.setRenderingHints(rh);
 
-        for (Edge e : this.edges) e.draw(g2d);
-        for (Vertex v : this.vertices) v.draw(g2d);
+        for (Edge e : this.edges.values()) e.draw(g2d);
+        for (Vertex v : this.vertices.values()) v.draw(g2d);
 
     }
 }
