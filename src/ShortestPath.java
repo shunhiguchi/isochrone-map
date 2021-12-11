@@ -12,13 +12,13 @@ import java.util.Set;
  */
 public class ShortestPath {
 
-    private final int dist[]; // Distances from the source vertex
-    private final int prev[]; // Previous vertex in the shortest paths
+    public final int dist[]; // Distances from the source vertex
+    public final int prev[]; // Previous vertex in the shortest paths
     private final Set<Integer> visited; // Previously visited vertices
     private PriorityQueue<Node> pq; // Priority queue to store vertices
 
-    private int V;
-    private List<List<Node>> adj;
+    private int V; // Number of vertices
+    private List<List<Node>> adj; // Adjacency list
 
     public ShortestPath(int V) {
         this.V = V;
@@ -34,7 +34,7 @@ public class ShortestPath {
      * @param src source vertex ID
      * @return an array containing an array of distances and array of previous vertices
      */
-    public List<int[]> dijkstra(List<List<Node>> adj, int src)     {
+    public void dijkstra(List<List<Node>> adj, int src)     {
         this.adj = adj;
 
         // Initialize distances to each node to a maximum integer value
@@ -61,8 +61,7 @@ public class ShortestPath {
             this.visited.add(u);
             processNeighbours(u);
         }
-
-        return Arrays.asList(dist, prev);
+        return;
     }
 
     /**
@@ -70,8 +69,8 @@ public class ShortestPath {
      * @param u a node of interest.
      */
     private void processNeighbours(int u) {
-        int edgeDistance = -1;
-        int newDistance = -1;
+        int edgeDistance;
+        int newDistance;
 
         for (int i = 0; i < this.adj.get(u).size(); i++) {
             Node v = this.adj.get(u).get(i);
@@ -98,7 +97,6 @@ public class ShortestPath {
  *  Node in digraph.
  */
 class Node implements Comparator<Node> {
-
     public int node;
     public int cost;
 

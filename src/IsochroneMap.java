@@ -12,25 +12,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+final String DELIMITER = ",";
+
 /**
  * Identify nodes accessible within a threshold distance.
  * Usage: IsochroneMap vertices.csv edges.csv 0 10
  */
 public class IsochroneMap {
+    // DEBUG: Move these attributes to the main function
+    private int V = 0; // Number of vertices
+    private int E = 0; // Number of edges
+    private final int[] dist; // Distance from a source vertex
+    private final int[] prev; // Previous vertex in a shortest path
+    private final int sourceVertexId; // Source vertex ID
+    private int thresholdDist; // Threshold distance
 
-    private int V;
-    private int E;
-    private final int[] dist;
-    private final int[] prev;
-    private final int sourceVertexId;
-    private int thresholdDist;
-
-    public IsochroneMap(String filePathVertices, String filePathEdges,
+    public IsochroneMap(String verticesFilePath, String edgesFilePath,
                         int sourceVertexId, int thresholdDist) throws IOException {
-        // Number of vertices
+        // Populate characteristics of 
         this.V = getV(filePathVertices);
-
-        // Source vertex ID
         this.sourceVertexId = sourceVertexId;
 
         // Load vertices and edges from input files
@@ -40,11 +40,8 @@ public class IsochroneMap {
             adj.add(item);
         }
 
-        this.E = 0;
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
-            String DELIMITER = ",";
             String line;
-            line = br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] columns = line.split(DELIMITER);
                 int fromVertex = Integer.parseInt(columns[1]);
@@ -60,13 +57,12 @@ public class IsochroneMap {
         // Compute the shortest paths
         ShortestPath sp = new ShortestPath(V);
         List<int[]> temp = sp.dijkstra(adj, this.sourceVertexId);
-        this.dist = temp.get(0);
-        this.prev = temp.get(1);
+        this.dist = sp.dist;
+        this.prev = sp.prev;
 
         // Create vertices
         Vertex[] vertices = new Vertex[this.V];
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathVertices))) {
-            String DELIMITER = ",";
             String line;
             line = br.readLine();
             while ((line = br.readLine()) != null) {
@@ -86,7 +82,6 @@ public class IsochroneMap {
         Edge[] edges = new Edge[this.E];
         Map<String, Integer> edgesFromVertices = new HashMap<String, Integer>();
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
-            String DELIMITER = ",";
             String line;
             line = br.readLine();
             while ((line = br.readLine()) != null) {
@@ -141,16 +136,13 @@ public class IsochroneMap {
         return (int) Files.lines(Paths.get(filePathVertices)).count() - 1;
     }
 
-
-
-
     /**
      * Test client.
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-        String filePathVertices = args[0];
-        String filePathEdges = args[1];
+        String verticesFilePath = args[0];
+        String edgesFilePath = args[1];
         int sourceVertexId = Integer.parseInt(args[2]);
         int thresholdDist = Integer.parseInt(args[3]);
 
