@@ -1,8 +1,3 @@
-/**
- * The Vertex class represents a vertex in a directed digraph. In addition, it
- * contains methods and attributes for isochrone map visualization.
- */
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -14,6 +9,10 @@ import java.awt.geom.Rectangle2D;
 
 import java.util.Comparator;
 
+/**
+ * The Vertex class represents a vertex in a directed digraph. In addition, it
+ * contains methods and attributes for isochrone map visualization.
+ */
 public class Vertex implements Comparator<Vertex> {
 
     /* Radius of a circle representing the vertex. */
@@ -75,7 +74,7 @@ public class Vertex implements Comparator<Vertex> {
     }
 
     /*
-     * Draw a vertex. Different colours are used depending on if the vertex is
+     * Draw the vertex. Different colours are used depending on if the vertex is
      * a source vertex and if the vertex is reachable within the threshold cost.
      */
     public void draw(Graphics2D g2d) {
