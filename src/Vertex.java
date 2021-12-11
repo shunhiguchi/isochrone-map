@@ -7,17 +7,14 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.JComponent;
+import java.util.Comparator;
 
-public class Vertex {
+public class Vertex implements Comparator<Vertex> {
 
     /* Radius of a circle representing the vertex. */
     private static final int R = 40;
@@ -43,6 +40,9 @@ public class Vertex {
     /* y coordinate of the vertex. */
     public final int y;
 
+    /* Cumulative cost to the vertex. */
+    public int cost;
+
     /* the vertex is a source vertex. */
     public boolean isSource;
 
@@ -64,6 +64,14 @@ public class Vertex {
         this.y = y;
         this.xtl = x - (float) R / 2;
         this.ytl = y - (float) R / 2;
+    }
+
+    /*
+     * Compare two vertices based on their cumulative costs.
+     */
+    @Override
+    public int compare(Vertex v1, Vertex v2) {
+        return Integer.compare(v1.cost, v2.cost);
     }
 
     /*
@@ -102,5 +110,4 @@ public class Vertex {
 
         g2d.drawString(idString, xid, yid);
     }
-
 }
