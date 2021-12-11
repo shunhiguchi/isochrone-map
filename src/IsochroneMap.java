@@ -15,91 +15,29 @@ import java.util.Map;
 final String DELIMITER = ",";
 
 /**
- * Identify nodes accessible within a threshold distance.
- * Usage: IsochroneMap vertices.csv edges.csv 0 10
+ * The IsochroneMap class identifies vertices in a digraph reachable within the
+ * threshold cost, and produces visualization.
+ *
+ * Usage: java IsochroneMap vertices.csv edges.csv source threshold
+ * E.g., java IsochroneMap vertices.csv edges.csv 0 7
  */
 public class IsochroneMap {
-    // DEBUG: Move these attributes to the main function
-    private int V = 0; // Number of vertices
-    private int E = 0; // Number of edges
-    private final int[] dist; // Distance from a source vertex
-    private final int[] prev; // Previous vertex in a shortest path
-    private final int sourceVertexId; // Source vertex ID
-    private int thresholdDist; // Threshold distance
 
-    public IsochroneMap(String verticesFilePath, String edgesFilePath,
-                        int sourceVertexId, int thresholdDist) throws IOException {
-        // Populate characteristics of 
-        this.V = getV(filePathVertices);
-        this.sourceVertexId = sourceVertexId;
+    /* Delimiter of CSV files. */
+    private final static String DELIMITER = ",";
 
-        // Load vertices and edges from input files
-        List<List<Node>> adj = new ArrayList<List<Node>>();
-        for (int i = 0; i < V; i++) {
-            List<Node> item = new ArrayList<Node>();
-            adj.add(item);
-        }
+    /* Map of vertices. */
+    private HashMap<Integer, Vertex> vertices;
 
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split(DELIMITER);
-                int fromVertex = Integer.parseInt(columns[1]);
-                int toVertex = Integer.parseInt(columns[2]);
-                int cost = Integer.parseInt(columns[3]);
-                adj.get(fromVertex).add(new Node(toVertex, cost));
-                E++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /* Map of edges. */
+    private HashMap<Integer, Edge> edges;
 
-        // Compute the shortest paths
-        ShortestPath sp = new ShortestPath(V);
-        List<int[]> temp = sp.dijkstra(adj, this.sourceVertexId);
-        this.dist = sp.dist;
-        this.prev = sp.prev;
+    /* Map of vertex adjacency list. */
+    private HashMap<Integer, List<Vertex>> adj;
 
-        // Create vertices
-        Vertex[] vertices = new Vertex[this.V];
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathVertices))) {
-            String line;
-            line = br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split(DELIMITER);
-                int id = Integer.parseInt(columns[0]);
-                int x = Integer.parseInt(columns[1]);
-                int y = Integer.parseInt(columns[2]);
-                boolean reachable = (dist[id] <= thresholdDist);
-                boolean source = (id == sourceVertexId);
-                vertices[id] = new Vertex(id, x, y, reachable, source);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public IsochroneMap() {
 
-        // Create edges
-        Edge[] edges = new Edge[this.E];
-        Map<String, Integer> edgesFromVertices = new HashMap<String, Integer>();
-        try (BufferedReader br = Files.newBufferedReader(Paths.get(filePathEdges))) {
-            String line;
-            line = br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split(DELIMITER);
-                int id = Integer.parseInt(columns[0]);
-                int fromNode = Integer.parseInt(columns[1]);
-                int toNode = Integer.parseInt(columns[2]);
-                int x1 = vertices[fromNode].x;
-                int y1 = vertices[fromNode].y;
-                int x2 = vertices[toNode].x;
-                int y2 = vertices[toNode].y;
-                String fromToNodePair = columns[1] + "-" + columns[2];
-                edgesFromVertices.put(fromToNodePair, id);
-                edges[id] = new Edge(id, x1, y1, x2, y2, false);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         // Determine if each edge is part of the shortest paths
         for (int i = 0; i < this.prev.length; i++) {
@@ -127,30 +65,68 @@ public class IsochroneMap {
 
     }
 
-    /**
-     * Return the number of vertices.
-     * @param filePathVertices file path for vertices.csv
-     * @return the number of vertices
+    /*
+     * Parse vertices from the input file.
      */
-    private int getV(String filePathVertices) throws IOException {
-        return (int) Files.lines(Paths.get(filePathVertices)).count() - 1;
-    }
-
-    /**
-     * Test client.
-     * @param args the command line arguments.
-     */
-    public static void main(String[] args) {
-        String verticesFilePath = args[0];
-        String edgesFilePath = args[1];
-        int sourceVertexId = Integer.parseInt(args[2]);
-        int thresholdDist = Integer.parseInt(args[3]);
-
-        try {
-            IsochroneMap isochroneMap = new IsochroneMap(filePathVertices,
-                    filePathEdges, sourceVertexId, thresholdDist);
+    private void parseVertices(String verticesFilePath) {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(verticesFilePath))) {
+            String line = br.readLine(); // Skip the header row.
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(IsochroneMap.DELIMITER);
+                int id = Integer.parseInt(columns[0]);
+                int x = Integer.parseInt(columns[1]);
+                int y = Integer.parseInt(columns[2]);
+                this.vertices.put(id, new Vertex(id, x, y));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /*
+     * Parse edges from the input file.
+     */
+    private void parseEdges(String edgesFilePath) {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(edgesFilePath))) {
+            String line = br.readLine(); // Skip the header row.
+            while ((line = br.readLine()) != null) {
+                String[] columns = line.split(DELIMITER);
+                int id = Integer.parseInt(columns[0]);
+                int v1id = Integer.parseInt(columns[1]);
+                int v2id = Integer.parseInt(columns[2]);
+                int cost = Integer.parseInt(columns[3]);
+                this.edges.put(id, new Edge(id, vertices.get(v1id), vertices.get(v2id), cost));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * Main method.
+     */
+    public static void main(String[] args) {
+
+        /* Create an instance of IsochroneMap with user arguments. */
+        IsochroneMap im = new IsochroneMap();
+
+        /* Parse user input files: vertices and edges. */
+        im.parseVertices(args[0]);
+        im.parseEdges(args[1]);
+
+        /* Set a source vertex. */
+        im.vertices.get(Integer.parseInt(args[2])).isSource = true;
+
+        /* Create an adjacency list. */
+        for (Vertex v: im.vertices.values()) {
+            List<Vertex> item = new ArrayList<>();
+            im.adj.put(v.id, item);
+        }
+        for (Edge e: im.edges.values()) {
+            im.adj.get(e.v1.id).add(e.v2)
+        }
+
+        /* Compute the shortest paths. */
+        ShortestPath sp = new ShortestPath(V);
     }
 }

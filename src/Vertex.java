@@ -39,8 +39,11 @@ public class Vertex implements Comparator<Vertex> {
     /* y coordinate of the vertex. */
     public final int y;
 
-    /* Cumulative cost to the vertex. */
+    /* Cumulative cost to the vertex from the source vertex. */
     public int cost;
+
+    /* Previous vertex in the shortest path. */
+    public Vertex prev;
 
     /* the vertex is a source vertex. */
     public boolean isSource;
@@ -63,6 +66,8 @@ public class Vertex implements Comparator<Vertex> {
         this.y = y;
         this.xtl = x - (float) R / 2;
         this.ytl = y - (float) R / 2;
+        this.isSource = false;
+        this.isReachable = false;
     }
 
     /*
