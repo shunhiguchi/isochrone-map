@@ -1,4 +1,8 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  * The ShortestPath class provides a method for computing the single-source
@@ -27,8 +31,8 @@ public class ShortestPath {
         this.vertices = vertices;
         this.edges = edges;
         this.adj = adj;
-        this.visited = new HashSet<Integer>();
-        this.pq = new PriorityQueue<Vertex>(vertices.size(), new Vertex());
+        this.visited = new HashSet<>();
+        this.pq = new PriorityQueue<>(vertices.size(), new Vertex());
     }
 
     /*
@@ -46,7 +50,8 @@ public class ShortestPath {
         while (this.visited.size() != this.vertices.size()) {
             if (this.pq.isEmpty()) break;
 
-            /* Remove the minimum distance vertex from the priority queue and
+            /*
+             * Remove the minimum distance vertex from the priority queue and
              * add it to the list of visited vertices. Process neighbouring
              * vertices.
              */
@@ -64,7 +69,8 @@ public class ShortestPath {
         int newCost;
         for (Map.Entry<Integer, Edge> entry: this.adj.get(u.id).entrySet()) {
 
-            /* If the neighbouring node hasn't been previously processed,
+            /*
+             * If the neighbouring node hasn't been previously processed,
              * compute the new distance and update the shortest distance to the
              * node if applicable.
              */

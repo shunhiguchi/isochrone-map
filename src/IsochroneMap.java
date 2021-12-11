@@ -11,9 +11,6 @@ import java.util.HashMap;
 /**
  * The IsochroneMap class identifies vertices in a digraph reachable within the
  * threshold cost, and produces visualization.
- *
- * Usage: java IsochroneMap vertices.csv edges.csv source threshold
- * E.g., java IsochroneMap vertices.csv edges.csv 0 7
  */
 public class IsochroneMap {
 
