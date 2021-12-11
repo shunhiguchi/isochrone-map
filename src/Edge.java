@@ -37,7 +37,7 @@ public class Edge {
     /* Vertex at the start of the edge. */
     public Vertex v1;
 
-    /* Vertex at the start of the edge. */
+    /* Vertex at the end of the edge. */
     public Vertex v2;
 
     /*
