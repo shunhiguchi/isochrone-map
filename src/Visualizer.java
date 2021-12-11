@@ -11,10 +11,10 @@ import javax.swing.JComponent;
 public class Visualizer extends JComponent {
 
     /* Map of vertices. */
-    private HashMap<Integer, Vertex> vertices;
+    private final HashMap<Integer, Vertex> vertices;
 
     /* Map of edges. */
-    private HashMap<Integer, Edge> edges;
+    private final HashMap<Integer, Edge> edges;
 
     /*
      * Constructor.
