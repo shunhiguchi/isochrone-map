@@ -100,7 +100,7 @@ public class IsochroneMap {
 
         /* Create an adjacency list. */
         for (Vertex v: im.vertices.values()) {
-            HashMap<Integer, Edge> item = new HashMap<Integer, Edge>();
+            HashMap<Integer, Edge> item = new HashMap<>();
             im.adj.put(v.id, item);
         }
         for (Edge e: im.edges.values()) {
