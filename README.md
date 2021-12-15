@@ -1,10 +1,10 @@
 # Isochrone Map
 
-A desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm. An isochrone map, like a travel time map, shows us how far we can reach within a certain time period. This type of map is handy when you want to know what's around you within 30 minutes of driving, as an example. In city planning, it is useful in demonstrating the connectivity and accessibility of transit and active transportation network.
+This is a desktop app to produce an isochrone map, implemented in Java with Dijkstra's shortest path algorithm. An isochrone map, like a travel time map, shows us how far we can reach within a certain time period. This type of map is handy when you want to know what's around you within 30 minutes of driving, as an example. In city planning, it is useful in demonstrating the connectivity and accessibility of transit and active transportation network.
 
 ## Features
 
-Produces an isochrone map. If vertices are reachable within a specified threshold, they're displayed with a light blue fill. Otherwise, they're displayed with a white fill. A source vertex is marked with dark blue. Edges which are used as shortest paths to the reachable vertices are displayed with a solid line whereas others are displayed with a dashed line.
+The app produces an isochrone map. If vertices are reachable within a specified threshold, they're displayed with a light blue fill. Otherwise, they're displayed with a white fill. A source vertex is marked with dark blue. Edges which are used as shortest paths to the reachable vertices are displayed with a solid line whereas others are displayed with a dashed line.
 
 ![Screenshot of a sample isochrone map](/img/sample-isochrone-map.png "Sample isochrone map")
 
