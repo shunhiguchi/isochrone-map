@@ -69,7 +69,6 @@ public class IsochroneMap {
      * Visualize the isochone map.
      */
     private void visualize() {
-        // Visualize Isochrone Map
         JFrame f = new JFrame();
         f.setSize(900, 600);
         f.setTitle("Isochrone Map");
