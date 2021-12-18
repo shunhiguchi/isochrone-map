@@ -38,6 +38,5 @@ public class Visualizer extends JComponent {
 
         for (Edge e : this.edges.values()) e.draw(g2d);
         for (Vertex v : this.vertices.values()) v.draw(g2d);
-
     }
 }
